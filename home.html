@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Moms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffe6f0;;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .filter-select {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            font-size: 14px;
+        }
+
+        .start-chat-btn {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .mom-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .mom-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffb3ba, #ffdfba);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .mom-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .mom-postpartum {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .mom-location {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .mom-interest {
+            font-size: 12px;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .chat-button {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 80%;
+            transition: all 0.3s ease;
+        }
+
+        .chat-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+        }
+
+        .chat-button:active {
+            transform: translateY(0);
+        }
+
+        .mom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .mom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Discover Moms</h1>
+            <div class="filters">
+                <select class="filter-select">
+                    <option>Month after Pregnancy</option>
+                    <option>1 month postpartum</option>
+                    <option>2 months postpartum</option>
+                    <option>3 months postpartum</option>
+                    <option>4 months postpartum</option>
+                    <option>5 months postpartum</option>
+                </select>
+                <select class="filter-select">
+                    <option>Distance</option>
+                    <option>Nearby</option>
+                    <option>5 km</option>
+                    <option>10 km</option>
+                    <option>25 km</option>
+                </select>
+                <button class="start-chat-btn">Start Chat</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="mom-grid">
+                <div class="mom-card">
+                    <div class="mom-avatar">👩</div>
+                    <div class="mom-name">Shama</div>
+                    <div class="mom-postpartum">1 months postpartum</div>
+                    <div class="mom-location">Noida</div>
+                    <div class="mom-interest">Interest: Cooking</div>
+                    <button class="chat-button" onclick="goToChat('Shama')">Start Chat</button>
+                </div>
+
+                <div class="mom-card">
+                    <div class="mom-avatar">👩</div>
+                    <div class="mom-name">Amritha</div>
+                    <div class="mom-postpartum">2 months postpartum</div>
+                    <div class="mom-location">Hyderabad</div>
+                    <div class="mom-interest">Interest: Music</div>
+                    <button class="chat-button" onclick="goToChat('Amritha')">Start Chat</button>
+                </div>
+
+                <div class="mom-card">
+                    <div class="mom-avatar">👩</div>
+                    <div class="mom-name">Sruthi</div>
+                    <div class="mom-postpartum">3 months postpartum</div>
+                    <div class="mom-location">Kochi</div>
+                    <div class="mom-interest">Interest: Art</div>
+                    <button class="chat-button" onclick="goToChat('Sruthi')">Start Chat</button>
+                </div>
+
+                <div class="mom-card">
+                    <div class="mom-avatar">👩</div>
+                    <div class="mom-name">syeha</div>
+                    <div class="mom-postpartum">4 months postpartum</div>
+                    <div class="mom-location">Kochi</div>
+                    <div class="mom-interest">Interest: sports and outdoor</div>
+                    <button class="chat-button" onclick="goToChat('syeha')">Start Chat</button>
+                </div>
+
+                <div class="mom-card">
+                    <div class="mom-avatar">👩</div>
+                    <div class="mom-name">Sara</div>
+                    <div class="mom-postpartum">5 months postpartum</div>
+                    <div class="mom-location">Kochi</div>
+                    <div class="mom-interest">Interest: technology</div>
+                    <button class="chat-button" onclick="goToChat('Sara')">Start Chat</button>
+                </div>
+
+                <div class="mom-card">
+                    <div class="mom-avatar">👩</div>
+                    <div class="mom-name">Megha</div>
+                    <div class="mom-postpartum">2 months postpartum</div>
+                    <div class="mom-location">Kochi</div>
+                    <div class="mom-interest">Interest: reading</div>
+                    <button class="chat-button" onclick="goToChat('Megha')">Start Chat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToChat(momName) {
+            // Store the selected mom's name in localStorage for the chat page
+            localStorage.setItem('selectedMom', momName);
+            
+            // Redirect to chat.html
+            window.location.href = 'chat.html';
+        }
+
+        // Add some interactivity to the filter dropdowns
+        document.querySelectorAll('.filter-select').forEach(select => {
+            select.addEventListener('change', function() {
+                console.log('Filter changed:', this.value);
+                // Here you could add filtering logic
+            });
+        });
+
+        // Add click effect to cards
+        document.querySelectorAll('.mom-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+                this.style.transition = 'all 0.3s ease';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            });
+        });
+
+        // Header start chat button functionality
+        document.querySelector('.start-chat-btn').addEventListener('click', function() {
+            alert('Select a mom from the list below to start chatting!');
+        });
+    </script>
+</body>
+</html>

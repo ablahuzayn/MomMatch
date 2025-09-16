@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wellness Care</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #fdfdfd;
+      color: #333;
+    }
+
+    /* Header */
+    .header {
+      background: #f7a7b5;
+      text-align: center;
+      padding: 2rem 1rem;
+      color: white;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .header p {
+      margin: 0.3rem 0 0;
+      font-size: 1rem;
+    }
+
+    /* Section Title */
+    .section-title {
+      text-align: center;
+      margin: 2rem 1rem 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #c94f6b;
+    }
+
+    /* Cards */
+    .doctor-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      margin: 1rem auto;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .doctor-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .doctor-info h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .doctor-info p {
+      margin: 0.2rem 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .icon-btn {
+      background: #f55c7a;
+      border: none;
+      border-radius: 50%;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .icon-btn img {
+      width: 20px;
+      height: 20px;
+      filter: invert(100%);
+    }
+
+    /* Book Button */
+    .book-btn {
+      display: block;
+      width: 90%;
+      max-width: 400px;
+      margin: 2rem auto;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: bold;
+      color: white;
+      background: #f55c7a;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: gray;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <h1>WELLNESS CARE</h1>
+    <p>Verified Specialists</p>
+  </div>
+
+  <!-- Section -->
+  <div class="section-title">Our Verified Psychologists & Gynecologists</div>
+
+  <!-- Doctor Cards -->
+  <div class="doctor-card">
+    <div class="doctor-info">
+      <h3>Dr. Anya Sharma</h3>
+      <p>Clinical Psychologist</p>
+      <p>ICs-8/5</p>
+    </div>
+    <button class="icon-btn"><img src="https://img.icons8.com/ios-filled/50/calendar.png"/></button>
+  </div>
+
+  <div class="doctor-card">
+    <div class="doctor-info">
+      <h3>Dr. Ananya A</h3>
+      <p>Clinical Psychologist</p>
+      <p>Years of Experience: 11</p>
+    </div>
+    <button class="icon-btn"><img src="https://img.icons8.com/ios-filled/50/calendar.png"/></button>
+  </div>
+
+  <div class="doctor-card">
+    <div class="doctor-info">
+      <h3>Dr. Rahul </h3>
+      <p>Obstetrician Gynecologist</p>
+      <p>Years of Experience: X</p>
+    </div>
+    <button class="icon-btn"><img src="https://img.icons8.com/ios-filled/50/calendar.png"/></button>
+  </div>
+
+  <div class="doctor-card">
+    <div class="doctor-info">
+      <h3>Priya Ram</h3>
+      <p>Child Psychologist</p>
+      <p>Years of Experience: 5</p>
+    </div>
+    <button class="icon-btn"><img src="https://img.icons8.com/ios-filled/50/calendar.png"/></button>
+  </div>
+
+  <div class="doctor-card">
+    <div class="doctor-info">
+      <h3>Sameer T</h3>
+      <p>Reproductive Endocrinologist</p>
+      <p>Years of Experience: X</p>
+    </div>
+    <button class="icon-btn"><img src="https://img.icons8.com/ios-filled/50/calendar.png"/></button>
+  </div>
+
+  <div class="doctor-card">
+    <div class="doctor-info">
+      <h3>Aisha Rahman</h3>
+      <p>Reproductive Endocrinologist</p>
+      <p>Years of Experience: 5</p>
+    </div>
+    <button class="icon-btn"><img src="https://img.icons8.com/ios-filled/50/calendar.png"/></button>
+  </div>
+
+  <!-- Booking Button -->
+  <button class="book-btn" onclick="bookNow()">BOOK AN APPOINTMENT NOW</button>
+  <p class="note">Redirects to external booking service</p>
+
+  <script>
+    function bookNow() {
+      alert("Redirecting to external booking service...");
+      window.location.href = "https://calendly.com/"; // Replace with actual link
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Discover Moms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: white;
+            height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .chat-user-info {
+            flex: 1;
+        }
+
+        .chat-user-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .chat-user-status {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+
+        .message.received {
+            justify-content: flex-start;
+        }
+
+        .message.sent {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.received .message-bubble {
+            background: white;
+            color: #333;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .message.sent .message-bubble {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+        }
+
+        .message-time {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .chat-input-area {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input:focus {
+            border-color: #ff6b9d;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-header">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <div class="chat-user-info">
+                <div class="chat-user-name" id="chatUserName">Loading...</div>
+                <div class="chat-user-status">Online</div>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="welcome-message">
+                Start your conversation with <span id="welcomeUserName">this mom</span>!
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="messageInput" placeholder="Type a message..." maxlength="500">
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <script>
+        // Get the selected mom's name from localStorage
+        const selectedMom = localStorage.getItem('selectedMom') || 'Mom';
+        
+        // Update the UI with the selected mom's name
+        document.getElementById('chatUserName').textContent = selectedMom;
+        document.getElementById('welcomeUserName').textContent = selectedMom;
+
+        // Sample messages to demonstrate chat functionality
+        const sampleMessages = [
+            { type: 'received', text: `Hi! I'm ${selectedMom}. So wonderful to connect with another mom! 👋`, time: '10:30 AM' },
+            { type: 'received', text: 'How are you and your little one doing? I\'d love to hear about your motherhood journey so far!', time: '10:31 AM' }
+        ];
+
+        let messages = [];
+
+        function goBack() {
+            window.location.href = 'home.html';
+        }
+
+        function displayMessage(message) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${message.type}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">
+                    ${message.text}
+                    <div class="message-time">${message.time}</div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function generateAIResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            // Baby care topics
+            if (message.includes('sleep') || message.includes('sleeping') || message.includes('nap')) {
+                const sleepResponses = [
+                    "Sleep is so important! I found that establishing a bedtime routine really helped. What's your little one's sleep schedule like?",
+                    "Sleep deprivation is real! Have you tried swaddling or white noise? Those worked wonders for me.",
+                    "I totally get the sleep struggles! How old is your baby? Sleep patterns change so much in the first year.",
+                    "Sleep when the baby sleeps - easier said than done, right? What helps your baby fall asleep?"
+                ];
+                return sleepResponses[Math.floor(Math.random() * sleepResponses.length)];
+            }
+            
+            // Feeding topics
+            if (message.includes('feed') || message.includes('milk') || message.includes('bottle') || message.includes('breastfeed')) {
+                const feedingResponses = [
+                    "Feeding can be challenging! Are you breastfeeding or bottle feeding? I'm happy to share my experience.",
+                    "I remember the feeding struggles. Every baby is different - what's working for you so far?",
+                    "Feeding schedules took me a while to figure out. How often is your little one eating?",
+                    "The feeding journey is unique for everyone. Have you had any challenges or concerns?"
+                ];
+                return feedingResponses[Math.floor(Math.random() * feedingResponses.length)];
+            }
+            
+            // Crying/fussy baby
+            if (message.includes('cry') || message.includes('fussy') || message.includes('upset') || message.includes('colicky')) {
+                const cryingResponses = [
+                    "Crying babies can be so stressful! Have you tried the 5 S's - swaddling, shushing, swinging, sucking, and side position?",
+                    "I feel you on the crying! Sometimes they just need to be held. What seems to calm your baby down?",
+                    "Fussy periods are normal but exhausting. Have you noticed any patterns in when your baby gets upset?",
+                    "Crying is their only way to communicate. Could it be hunger, tiredness, or maybe gas? What have you tried?"
+                ];
+                return cryingResponses[Math.floor(Math.random() * cryingResponses.length)];
+            }
+            
+            // Postpartum recovery
+            if (message.includes('tired') || message.includes('exhausted') || message.includes('recovery') || message.includes('healing')) {
+                const recoveryResponses = [
+                    "Recovery is tough! Be gentle with yourself - your body did something amazing. Are you getting any help at home?",
+                    "The exhaustion is real! I'm still figuring out how to balance everything. How are you taking care of yourself?",
+                    "Postpartum recovery takes time. Don't rush it! What's been the hardest part for you?",
+                    "Your body needs time to heal. Are you able to rest when the baby sleeps? Self-care is so important."
+                ];
+                return recoveryResponses[Math.floor(Math.random() * recoveryResponses.length)];
+            }
+            
+            // Development/milestones
+            if (message.includes('milestone') || message.includes('develop') || message.includes('crawl') || message.includes('walk') || message.includes('talk')) {
+                const developmentResponses = [
+                    "Milestones are exciting! Every baby develops at their own pace. What new things is your little one doing?",
+                    "Development is so fascinating to watch! How old is your baby? They all reach milestones differently.",
+                    "I love seeing all the new things they learn! Are you tracking milestones or just enjoying the journey?",
+                    "Each milestone is special! Don't worry if your baby isn't following the 'typical' timeline - they're unique!"
+                ];
+                return developmentResponses[Math.floor(Math.random() * developmentResponses.length)];
+            }
+            
+            // Emotions/mental health
+            if (message.includes('overwhelmed') || message.includes('anxious') || message.includes('worried') || message.includes('sad') || message.includes('lonely')) {
+                const emotionResponses = [
+                    "You're not alone in feeling this way. Motherhood is overwhelming! Have you been able to talk to anyone about how you're feeling?",
+                    "These feelings are so common but that doesn't make them easier. Are you getting support from family or friends?",
+                    "It's okay to not be okay. Being a new mom is incredibly challenging. What's been weighing on you most?",
+                    "Your feelings are valid. Have you considered talking to your doctor? Sometimes we need extra support and that's completely normal."
+                ];
+                return emotionResponses[Math.floor(Math.random() * emotionResponses.length)];
+            }
+            
+            // Questions about the other person
+            if (message.includes('how are you') || message.includes('how old') || message.includes('about you') || message.includes('your baby')) {
+                const personalResponses = [
+                    `I'm doing well, thanks for asking! My little one is keeping me busy. I'm ${Math.floor(Math.random() * 3) + 2} months postpartum now. How about you?`,
+                    "I'm hanging in there! Some days are better than others. It's so nice to connect with other moms who understand. How are you adjusting?",
+                    "Thanks for asking! I'm learning something new about being a mom every day. What's your experience been like so far?",
+                    "I'm good! Tired but good. This whole mom thing is quite the adventure, isn't it? What's been surprising you most?"
+                ];
+                return personalResponses[Math.floor(Math.random() * personalResponses.length)];
+            }
+            
+            // Greetings
+            if (message.includes('hi') || message.includes('hello') || message.includes('hey') || message.includes('good morning') || message.includes('good afternoon')) {
+                const greetingResponses = [
+                    "Hi there! So nice to meet you! How are you and your little one doing today?",
+                    "Hello! I'm so glad we connected. It's wonderful to chat with another mom. How's your day going?",
+                    "Hey! Thanks for reaching out. I love being able to share this journey with other moms. What's on your mind?",
+                    "Hi! It's great to meet you! How are you adjusting to motherhood?"
+                ];
+                return greetingResponses[Math.floor(Math.random() * greetingResponses.length)];
+            }
+            
+            // General parenting advice requests
+            if (message.includes('advice') || message.includes('help') || message.includes('what should i do') || message.includes('suggestions')) {
+                const adviceResponses = [
+                    "I'd love to help! What specific situation are you dealing with? Every baby is different, but I'm happy to share what worked for me.",
+                    "I'm here for you! What's going on? Sometimes just talking it through with another mom helps so much.",
+                    "Of course! What do you need advice about? I've learned so much from other moms sharing their experiences.",
+                    "I'm happy to share what I know! What's the situation? Remember, you're doing better than you think!"
+                ];
+                return adviceResponses[Math.floor(Math.random() * adviceResponses.length)];
+            }
+            
+            // Thank you responses
+            if (message.includes('thank you') || message.includes('thanks') || message.includes('appreciate')) {
+                const thankResponses = [
+                    "You're so welcome! We moms need to support each other. Feel free to ask me anything!",
+                    "Anytime! I'm here whenever you need to chat. Being a mom is tough but we've got this!",
+                    "Happy to help! Don't hesitate to reach out anytime. How else are you doing?",
+                    "Of course! That's what we're here for - to support each other through this journey!"
+                ];
+                return thankResponses[Math.floor(Math.random() * thankResponses.length)];
+            }
+            
+            // Default responses for topics not covered
+            const defaultResponses = [
+                "That's interesting! Tell me more about that. I'd love to hear your thoughts.",
+                "I can relate to that! What's your experience been like with this?",
+                "Thanks for sharing! How are you feeling about everything?",
+                "I hear you! Being a mom brings up so many new experiences. What's been on your mind lately?",
+                "That sounds challenging. How are you handling it? I'm here to listen!",
+                "Every mom's journey is so different! What's working well for you right now?"
+            ];
+            
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const messageText = input.value.trim();
+            
+            if (messageText) {
+                const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const message = {
+                    type: 'sent',
+                    text: messageText,
+                    time: currentTime
+                };
+                
+                messages.push(message);
+                displayMessage(message);
+                input.value = '';
+                
+                // Generate AI response based on user input
+                setTimeout(() => {
+                    const aiResponse = generateAIResponse(messageText);
+                    const responseTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    const responseMessage = {
+                        type: 'received',
+                        text: aiResponse,
+                        time: responseTime
+                    };
+                    
+                    messages.push(responseMessage);
+                    displayMessage(responseMessage);
+                }, 1000 + Math.random() * 2000);
+            }
+        }
+
+        // Allow sending messages with Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Load sample messages on page load
+        window.addEventListener('load', function() {
+            // Clear the welcome message
+            document.getElementById('chatMessages').innerHTML = '';
+            
+            // Display sample messages with delay
+            sampleMessages.forEach((message, index) => {
+                setTimeout(() => {
+                    displayMessage(message);
+                }, (index + 1) * 500);
+            });
+        });
+
+        // Update send button state based on input
+        document.getElementById('messageInput').addEventListener('input', function() {
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = !this.value.trim();
+        });
+    </script>
+</body>
+</html>
